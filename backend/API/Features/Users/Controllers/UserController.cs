@@ -7,7 +7,7 @@ namespace API.Features.Users.Controllers;
 
 [Route("api/users")]
 [ApiController]
-public class UsersController(DataContext context) : ControllerBase
+public class UserController(DataContext context) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<User>>> GetUsers() => 
