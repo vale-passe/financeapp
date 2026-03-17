@@ -1,5 +1,3 @@
-using API.Features.Users.Entities;
-using API.Features.Users.Query;
 using API.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -13,15 +11,12 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
+        builder.Services.AddCors();
+        
         builder.Services.AddDbContext<DataContext>(options =>
         {
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
         });
-        builder.Services
-            .AddGraphQLServer()
-            .RegisterDbContextFactory<DataContext>()
-            .AddQueryType()
-            .AddTypeExtension<UserQueries>();
 
         var app = builder.Build();
 
@@ -31,8 +26,12 @@ public static class Program
             app.MapScalarApiReference();
         }
 
+        app.UseCors(options => options
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+        
         app.MapControllers();
-        app.MapGraphQL();
         app.Run();
     }
 }
