@@ -17,12 +17,22 @@ namespace API.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Username = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false)
+                    Firstname = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Lastname = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    ImageAvatarUrl = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
